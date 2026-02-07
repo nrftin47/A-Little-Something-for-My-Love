@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reasons I Love You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    /* GLOBAL THEME */
+    html, body {
+      margin:0; padding:0; height:100%;
+      font-family:'Great Vibes', cursive;
+      background:linear-gradient(to bottom,#2a0a1f,#660033);
+      color:#ffe6eb;
+      cursor:url('heartcursor.png') 4 4, auto;
+      overflow-x: hidden;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+    html, body { -ms-overflow-style: none; scrollbar-width: none; }
+
+    h1 {
+      font-size: 3em;
+      margin: 40px 0;
+      text-shadow: 0 0 15px #ff99aa;
+      text-align: center;
+    }
+
+    /* REASONS BOX */
+    .reasons-box {
+      max-width: 700px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
+      animation: pulseGlow 2s infinite;
+      border-radius: 25px;
+      padding: 40px;
+      text-align: left;
+      backdrop-filter: blur(5px);
+      position: relative;
+      z-index: 1;
+      transition: all 0.4s ease;
+    }
+    .reasons-box:hover {
+      box-shadow: 0 0 30px #ff99aa;
+      transform: scale(1.02);
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 20px rgba(255, 182, 193, 0.4); }
+      50% { box-shadow: 0 0 35px #ffcce0; }
+      100% { box-shadow: 0 0 20px rgba(255, 182, 193, 0.4); }
+    }
+    .reasons-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .reasons-box li {
+      font-size: 1.6em;
+      margin: 12px 0;
+      color: #ffe6eb;
+      text-shadow: 0 0 6px #ff99aa;
+      position: relative;
+      padding-left: 25px;
+    }
+    .reasons-box li::before {
+      content: "♥";
+      position: absolute;
+      left: 0;
+      color: #ffb6c1;
+    }
+
+    /* BACK BUTTON */
+    .button-container { text-align: center; margin: 40px 0; z-index: 1; position: relative; }
+    .back-btn {
+      text-decoration: none;
+      padding: 12px 35px;
+      font-size: 1.3em;
+      border-radius: 50px;
+      background: linear-gradient(145deg, #7A1D44, #C94C74);
+      color: #fff;
+      transition: 0.3s;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(201, 76, 116, 0.5);
+    }
+    .back-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff99aa; }
+
+    /* Floating heart bubbles */
+    .floating-hearts, .floating-dust {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .heart {
+      position:absolute; width:20px; height:20px;
+      background:pink; transform:rotate(-45deg);
+      animation:floatHeart 12s infinite ease-in-out;
+    }
+    .heart::before, .heart::after {
+      content:""; position:absolute; width:20px; height:20px;
+      background:pink; border-radius:50%;
+    }
+    .heart::before { top:-10px; left:0; }
+    .heart::after { left:10px; top:0; }
+    @keyframes floatHeart {
+      0% { transform:translateY(100vh) rotate(-45deg) scale(0.5); opacity:0; }
+      100% { transform:translateY(-10vh) rotate(-45deg) scale(1.2); opacity:1; }
+    }
+
+    /* Sparkling dust */
+    .dust {
+      position:absolute; width:2px; height:2px;
+      border-radius:50%; background:#ffe6eb;
+      opacity:0.7; box-shadow:0 0 6px #ff99aa;
+      animation:driftDust 15s linear infinite;
+    }
+    @keyframes driftDust {
+      from { transform:translateY(100vh) translateX(0); }
+      to   { transform:translateY(-10vh) translateX(30vw); }
+    }
+
+    /* Sparkle trail */
+    .sparkle {
+      position:absolute; width:8px; height:8px;
+      background:#ffb6c1; border-radius:50%;
+      box-shadow:0 0 12px #ff99aa;
+      pointer-events:none; z-index:999;
+      animation:fadeSparkle 1s ease-out forwards;
+    }
+    @keyframes fadeSparkle { from{opacity:1;} to{opacity:0;} }
+  </style>
+</head>
+<body>
+  <h1>Reasons I Love You</h1>
+
+  <div class="reasons-box">
+    <ul>
+      <li>I love how smart you are, always thinking clearly and solving things in your own way.</li>
+      <li>I love how hardworking and diligent you are, putting your heart into everything you do.</li>
+      <li>I love how handsome you are… yes, really (guilty).</li>
+      <li>I love that you’re sweet and soft-spoken (towards me), and that your words always feel like a hug.</li>
+      <li>I love how calm and collected you stay, even when things get tricky.</li>
+      <li>I love your charming confidence and how you carry yourself with ease.</li>
+      <li>I love that you genuinely care about the people and things important to you.</li>
+      <li>I love your sense of humor and how you can make even small moments fun.</li>
+      <li>I love how you’re a gentleman, always polite, respectful, and thoughtful in the little things.</li>
+      <li>I love that you’re dependable, someone people can always count on.</li>
+      <li>I love how humble you are, even though you have so many amazing qualities.</li>
+      <li>I love that you’re patient and understanding, not just with me, but with everyone around you.</li>
+      <li>I love that you’re just… you.</li>
+    </ul>
+  </div>
+
+  <div class="button-container">
+    <a href="index.html#main" class="back-btn">Back</a>
+  </div>
+
+  <!-- Floating elements -->
+  <div class="floating-hearts" id="main-hearts"></div>
+  <div class="floating-dust" id="main-dust"></div>
+
+  <audio id="bg-music" loop>
+    <source src="psiloveyou.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Floating hearts
+    function createHearts(container, count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.transform = 'translateY(100vh) rotate(-45deg) scale(0.5)'; // start at bottom
+        heart.style.opacity = '0'; // start invisible
+        heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // Sparkling dust
+    function createDust(container, count) {
+      for (let i = 0; i < count; i++) {
+        const dust = document.createElement('div');
+        dust.classList.add('dust');
+        dust.style.left = Math.random() * 100 + 'vw';
+        dust.style.transform = 'translateY(100vh) translateX(0)'; // start at bottom
+        dust.style.animationDelay = `${Math.random() * 15}s`;
+        container.appendChild(dust);
+      }
+    }
+
+    // Initialize background hearts + dust
+    createHearts(document.getElementById('main-hearts'), 25);
+    createDust(document.getElementById('main-dust'), 50);
+
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.volume = 0.7;
+    bgMusic.play().catch(err => console.warn("Audio playback failed:", err));
+
+    // Sparkle trail
+    document.addEventListener("mousemove", function (e) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = (e.pageX - 4) + "px";
+      sparkle.style.top = (e.pageY - 4) + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+  </script>
+</body>
+</html>

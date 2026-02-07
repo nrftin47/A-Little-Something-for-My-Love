@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A little Something For You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin:0; padding:0; height:100%;
+      font-family:'Great Vibes', cursive;
+      background:linear-gradient(to bottom,#2a0a1f,#660033); /* dark pink fairy gradient */
+      color:#ffe6eb;
+      cursor:url('heartcursor.png') 4 4, auto;
+    }
+
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+    /* HIDE SCROLLBARS BUT ALLOW SCROLLING */
+    /* For Chrome, Safari, and Opera */
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none; 
+    }
+    /* For Firefox, IE, and Edge */
+    html, body {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Cover Screen */
+    #cover {
+      position:absolute; top:0; left:0;
+      width:100%; height:100%;
+      background:radial-gradient(circle at center,#66112c,#2a0a1f);
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      text-align:center; animation:fadeIn 2s ease;
+      z-index:2;
+      padding: 60px 20px; /* ruang seimbang dari hujung screen */
+      box-sizing: border-box;
+    }
+    
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em; 
+      color: #ffd6e8; 
+      text-shadow: 0 0 10px #ff99aa; 
+      margin-bottom: 0px;
+    }
+
+    .subtitle-box {
+       text-align: center;
+       margin: 20px auto;
+       max-width: 900px; /* supaya teks tak terlalu panjang */
+    }
+
+    .subtitle {
+      font-size: 1.6em;
+      color: #ffccd5;
+      margin-bottom: 5px;
+      line-height: 1.5;
+    }
+
+    .enter-btn {
+      margin-top: 10px;
+      padding: 14px 36px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #7A1D44, #C94C74, #E68CA8);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(230, 140, 168, 0.6);
+      transition: all 0.3s ease;
+      font-family: 'Great Vibes', cursive; /* sama font sweet */
+    }
+
+    .enter-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px #ffcce0; 
+    }  
+    /* Floating heart bubbles */
+    .floating-hearts, .floating-dust {
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .heart {
+      position:absolute; width:20px; height:20px;
+      background:pink; transform:rotate(-45deg);
+      animation:floatHeart 12s infinite ease-in-out;
+    }
+    .heart::before,
+    .heart::after {
+      content:""; position:absolute; width:20px; height:20px;
+      background:pink; border-radius:50%;
+    }
+    .heart::before { top:-10px; left:0; }
+    .heart::after { left:10px; top:0; }
+    @keyframes floatHeart {
+      0% { transform:translateY(100vh) rotate(-45deg) scale(0.5); opacity:0; }
+      100% { transform:translateY(-10vh) rotate(-45deg) scale(1.2); opacity:1; }
+    }
+
+    /* Sparkling dust (stars) */
+    .dust {
+      position:absolute; width:2px; height:2px;
+      border-radius:50%; background:#ffe6eb;
+      opacity:0.7; box-shadow:0 0 6px #ff99aa;
+      animation:driftDust 15s linear infinite;
+    }
+    @keyframes driftDust {
+      from { transform:translateY(100vh) translateX(0); }
+      to   { transform:translateY(-10vh) translateX(30vw); }
+    }
+
+    /* Main Section */
+    #main {
+      position:absolute; top:0; left:0;
+      width:100%; height:100%;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      text-align:center; opacity:0; z-index:1;
+      background:linear-gradient(to bottom,#2a0a1f,#660033);
+      transition:opacity 1.2s ease;
+    }
+
+    .grid-title { font-size:2.5em; margin-bottom:40px; text-shadow:0 0 6px #ff99aa; }
+    .button-grid { display:grid; grid-template-columns:repeat(2, 1fr); justify-content:center; gap:20px; }
+    .magic-button {
+      display: flex;              /* aktifkan flexbox */
+      justify-content: center;    /* center horizontal */
+      align-items: center;        /* center vertical */
+      font-size: 1.35em;           /* besarkan teks */
+      font-family: 'Great Vibes', cursive; /* sweet romantic font */
+      text-align: center;
+
+      background: linear-gradient(145deg, #7A1D44, #E68CA8, #7A1D44); /* dark pink to soft pink */
+      color: #fff;
+      padding: 25px;
+      width: 150px;
+      height: 100px;
+      border-radius: 20px;
+      box-shadow:  0 0 15px rgba(255, 182, 193, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .magic-button:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 20px #ffccd5; /* soft pink glow bila hover */
+    }
+
+    /* Sparkle trail */
+    .sparkle {
+      position:absolute; width:8px; height:8px;
+      background:#ffb6c1; border-radius:50%;
+      box-shadow:0 0 12px #ff99aa;
+      pointer-events:none; z-index:999;
+      animation:fadeSparkle 1s ease-out forwards;
+    }
+    @keyframes fadeSparkle { from{opacity:1;} to{opacity:0;} }
+  </style>
+</head>
+<body>
+  <!-- Cover -->
+  <section id="cover">
+    <h1>Happy Birthday Sayang ♡︎</h1>
+    <div class="subtitle-box">
+      <p class="subtitle">
+        It’s my sweet boy’s birthday, so I made a little something for you hehe.
+        I’m sorry I can’t be there to celebrate with you since we’re far apart, but we’ll celebrate properly together when the time comes, okay? I hope this little gift makes your day feel extra special.
+      </p>
+    </div>
+    <button class="enter-btn">Click Here, My Love</button>
+    <div class="floating-hearts" id="cover-hearts"></div>
+    <div class="floating-dust" id="cover-dust"></div>
+    <audio id="bg-music" loop>
+      <source src="psiloveyou.mp3" type="audio/mpeg">
+    </audio>
+  </section>
+
+  <!-- Main -->
+  <section id="main">
+    <div class="grid-title">⟡ A Little World I Made for You ⟡</div>
+    <div class="floating-hearts" id="main-hearts"></div>
+    <div class="floating-dust" id="main-dust"></div>
+    <div class="button-grid">
+      <a href="birthday.html" class="magic-button">Birthday Wishes</a>
+      <a href="reasons.html" class="magic-button">Reasons I Love You</a>
+      <a href="memories.html" class="magic-button">Memories of Us</a>
+      <a href="letter.html" class="magic-button">A Letter for You</a>
+    </div>
+  </section>
+<script>
+    // Floating hearts
+    function createHearts(container, count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // Sparkling dust
+    function createDust(container, count) {
+      for (let i = 0; i < count; i++) {
+        const dust = document.createElement('div');
+        dust.classList.add('dust');
+        dust.style.left = Math.random() * 100 + 'vw';
+        dust.style.animationDelay = `${Math.random() * 15}s`;
+        container.appendChild(dust);
+      }
+    }
+
+    // Initialize cover hearts + dust
+    createHearts(document.getElementById('cover-hearts'), 25);
+    createDust(document.getElementById('cover-dust'), 50);
+
+    const cover = document.getElementById('cover');
+    const main = document.getElementById('main');
+    const mainHearts = document.getElementById('main-hearts');
+    const mainDust = document.getElementById('main-dust');
+    const bgMusic = document.getElementById('bg-music');
+
+    document.querySelector('.enter-btn').addEventListener('click', () => {
+      cover.style.opacity = 0;
+      setTimeout(() => {
+        cover.style.display = 'none';
+        createHearts(mainHearts, 25);
+        createDust(mainDust, 50);
+        main.style.opacity = 1;
+
+        // Play background music
+        bgMusic.volume = 0.7;
+        bgMusic.play().catch(err => console.warn("Audio playback failed:", err));
+      }, 1000);
+    });
+
+    // Sparkle trail
+    document.addEventListener("mousemove", function (e) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = (e.pageX - 4) + "px";
+      sparkle.style.top = (e.pageY - 4) + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+</script>
+</body>
+</html>

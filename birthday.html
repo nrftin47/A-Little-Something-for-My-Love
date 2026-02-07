@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Wishes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    html {
+      margin:0; padding:0; height:100%;
+      font-family:'Great Vibes', cursive;
+      background:linear-gradient(to bottom,#2a0a1f,#660033); /* dark pink fairy gradient */
+      background-attachment: fixed; /* prevents shifting and potential lines */
+      color:#ffe6eb;
+      cursor:url('heartcursor.png') 4 4, auto;
+    }
+    body {
+      margin:0; padding:0; height:100%;
+      background: transparent; /* no background to avoid seams */
+    }
+
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+    /* Hide scrollbars but allow scrolling */
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+    html, body { -ms-overflow-style: none; scrollbar-width: none; }
+      
+    h1 {
+      font-size: 3em;
+      margin: 40px 0;
+      text-shadow: 0 0 15px #ff99aa;
+      text-align: center;
+    }
+
+    /* BACK BUTTON */
+    .button-container { text-align: center; margin: 40px 0; z-index: 1; position: relative; }
+    .back-btn {
+      text-decoration: none;
+      padding: 12px 35px;
+      font-size: 1.3em;
+      border-radius: 50px;
+      background: linear-gradient(145deg, #7A1D44, #C94C74);
+      color: #fff;
+      transition: 0.3s;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(201, 76, 116, 0.5);
+    }
+    .back-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff99aa; }
+
+    /* Floating heart bubbles */
+    .floating-hearts, .floating-dust {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .heart {
+      position:absolute; width:20px; height:20px;
+      background:pink; transform:rotate(-45deg);
+      animation:floatHeart 12s infinite ease-in-out;
+    }
+    .heart::before, .heart::after {
+      content:""; position:absolute; width:20px; height:20px;
+      background:pink; border-radius:50%;
+    }
+    .heart::before { top:-10px; left:0; }
+    .heart::after { left:10px; top:0; }
+    @keyframes floatHeart {
+      0% { transform:translateY(100vh) rotate(-45deg) scale(0.5); opacity:0; }
+      100% { transform:translateY(-10vh) rotate(-45deg) scale(1.2); opacity:1; }
+    }
+
+    /* Sparkling dust */
+    .dust {
+      position:absolute; width:2px; height:2px;
+      border-radius:50%; background:#ffe6eb;
+      opacity:0.7; box-shadow:0 0 6px #ff99aa;
+      animation:driftDust 15s linear infinite;
+    }
+    @keyframes driftDust {
+      from { transform:translateY(100vh) translateX(0); }
+      to   { transform:translateY(-10vh) translateX(30vw); }
+    }
+
+    /* Sparkle trail */
+    .sparkle {
+      position:absolute; width:8px; height:8px;
+      background:#ffb6c1; border-radius:50%;
+      box-shadow:0 0 12px #ff99aa;
+      pointer-events:none; z-index:999;
+      animation:fadeSparkle 1s ease-out forwards;
+    }
+    @keyframes fadeSparkle { from{opacity:1;} to{opacity:0;} }
+
+    /* CALENDAR */
+    .calendar-box {
+      margin: 40px auto; /* centered with auto, consistent with reasons.html */
+      width: 400px;
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
+      z-index: 1;
+    }
+    .calendar-header {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      color: #ffccd5;
+      text-align: center;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      text-align: center;
+    }
+    .day-name {
+      font-weight: bold;
+      color: #ffb6c1;
+      padding-bottom: 5px;
+    }
+    .day {
+      padding: 8px 0;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1em;
+    }
+    .highlight {
+      background: linear-gradient(145deg, #C94C74, #E68CA8);
+      box-shadow: 0 0 15px rgba(230, 140, 168, 0.9);
+      font-weight: bold;
+    }
+
+    /* BOTTOM ROW */
+    .bottom-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* SLIDESHOW */
+    .slideshow-box {
+      width: 250px;
+      height: 350px;
+    }
+    .slideshow {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.6);
+      background: rgba(255,255,255,0.05);
+      z-index: 1;
+    }
+    .slides {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease; /* smooth fade */
+    }
+   .active { opacity: 1; }
+
+    /* WISHES */
+    .wishes-box {
+      width: 350px;
+      height: 310px;
+      padding: 20px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #7A1D44, #E68CA8, #7A1D44);
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.6);
+      font-size: 1.2em;
+      color: #fff;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>It's Your Day, Love!</h1>
+
+  <!-- Calendar -->
+  <div class="calendar-box">
+    <div class="calendar-header">February 2026</div>
+    <div class="calendar">
+      <div class="day-name">Sun</div><div class="day-name">Mon</div><div class="day-name">Tue</div><div class="day-name">Wed</div><div class="day-name">Thu</div><div class="day-name">Fri</div><div class="day-name">Sat</div>
+      <div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div><div class="day highlight">7</div>
+      <div class="day">8</div><div class="day">9</div><div class="day">10</div><div class="day">11</div><div class="day">12</div><div class="day">13</div><div class="day">14</div>
+      <div class="day">15</div><div class="day">16</div><div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div><div class="day">21</div>
+      <div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div><div class="day">27</div><div class="day">28</div>
+    </div>
+  </div>
+
+  <!-- Slideshow + Wishes -->
+  <div class="bottom-row">
+    <div class="slideshow-box">
+      <div class="slideshow">
+        <img src="amin1.jpg" class="slides active">
+        <img src="amin2.jpg" class="slides">
+        <img src="amin3.jpg" class="slides">
+        <img src="amin4.jpg" class="slides">
+        <img src="amin5.jpg" class="slides">
+        <img src="amin6.jpg" class="slides">
+        <img src="amin7.jpg" class="slides">
+        <img src="amin8.jpg" class="slides">
+      </div>
+    </div>
+
+    <div class="wishes-box">
+      <p>Happy 21st birthday, my sweet boy! 🤍</p>
+      <p>I hope this year brings you even more smiles, success, and moments as special as you are.
+I’m so proud of you, and I can’t wait until we can celebrate properly together.</p>
+      <p> know you’re working hard on your studies and your finals are coming up soon.
+Just know I’m rooting for you always. You’ve got this, sayang!
+Here’s to a year full of growth, confidence, and all the success you deserve.</p>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="button-container">
+    <a href="index.html#main" class="back-btn">Back</a>
+  </div>
+
+  <!-- Floating elements -->
+  <div class="floating-hearts" id="main-hearts"></div>
+  <div class="floating-dust" id="main-dust"></div>
+
+  <audio id="bg-music" loop>
+    <source src="psiloveyou.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Slideshow Logic
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slides");
+    if(slides.length > 0) {
+      setInterval(() => {
+        slides[slideIndex].classList.remove("active");
+        slideIndex = (slideIndex + 1) % slides.length;
+        slides[slideIndex].classList.add("active");
+      }, 3000);
+    }
+
+    // Floating hearts
+    function createHearts(container, count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.transform = 'translateY(100vh) rotate(-45deg) scale(0.5)'; // start at bottom
+        heart.style.opacity = '0'; // start invisible
+        heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // Sparkling dust
+    function createDust(container, count) {
+      for (let i = 0; i < count; i++) {
+        const dust = document.createElement('div');
+        dust.classList.add('dust');
+        dust.style.left = Math.random() * 100 + 'vw';
+        dust.style.transform = 'translateY(100vh) translateX(0)'; // start at bottom
+        dust.style.animationDelay = `${Math.random() * 15}s`;
+        container.appendChild(dust);
+      }
+    }
+
+    // Initialize background hearts + dust
+    createHearts(document.getElementById('main-hearts'), 25);
+    createDust(document.getElementById('main-dust'), 50);
+
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.volume = 0.7;
+    bgMusic.play().catch(err => console.warn("Audio playback failed:", err));
+
+    // Sparkle trail
+    document.addEventListener("mousemove", function (e) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = (e.pageX - 4) + "px";
+      sparkle.style.top = (e.pageY - 4) + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+  </script>
+</body>
+</html>

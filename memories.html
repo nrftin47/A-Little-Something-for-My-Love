@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memories of Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    html {
+      margin:0; padding:0; height:100%;
+      font-family:'Great Vibes', cursive;
+      background:linear-gradient(to bottom,#2a0a1f,#660033);
+      background-attachment: fixed;
+      color:#ffe6eb;
+      cursor:url('heartcursor.png') 4 4, auto;
+    }
+    body { margin:0; padding:0; background: transparent; }
+
+    /* Hide scrollbars */
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+    html, body { -ms-overflow-style: none; scrollbar-width: none; }
+
+    h1 {
+      font-size: 3.5em;
+      margin: 30px 0;
+      text-shadow: 0 0 15px #ff99aa;
+      text-align: center;
+    }
+
+    /* BACK BUTTON */
+    .button-container { margin: 40px 0; text-align: center; }
+    .back-btn {
+      text-decoration: none;
+      padding: 12px 35px;
+      font-size: 1.3em;
+      border-radius: 50px;
+      background: linear-gradient(145deg, #7A1D44, #C94C74);
+      color: #fff;
+      transition: 0.3s;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(201, 76, 116, 0.5);
+    }
+    .back-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff99aa; }
+
+    /* Floating hearts + dust */
+    .floating-hearts, .floating-dust {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .heart { position:absolute; width:20px; height:20px; background:pink; transform:rotate(-45deg); animation:floatHeart 12s infinite ease-in-out; }
+    .heart::before, .heart::after { content:""; position:absolute; width:20px; height:20px; background:pink; border-radius:50%; }
+    .heart::before { top:-10px; left:0; }
+    .heart::after { left:10px; top:0; }
+    @keyframes floatHeart { 0% { transform:translateY(100vh) rotate(-45deg) scale(0.5); opacity:0; } 100% { transform:translateY(-10vh) rotate(-45deg) scale(1.2); opacity:1; } }
+
+    .dust { position:absolute; width:2px; height:2px; border-radius:50%; background:#ffe6eb; opacity:0.7; box-shadow:0 0 6px #ff99aa; animation:driftDust 15s linear infinite; }
+    @keyframes driftDust { from { transform:translateY(100vh) translateX(0); } to { transform:translateY(-10vh) translateX(30vw); } }
+
+    .sparkle { position:absolute; width:8px; height:8px; background:#ffb6c1; border-radius:50%; box-shadow:0 0 12px #ff99aa; pointer-events:none; z-index:999; animation:fadeSparkle 1s ease-out forwards; }
+    @keyframes fadeSparkle { from{opacity:1;} to{opacity:0;} }
+
+    /* CONTENT WRAPPER */
+    .content-wrapper { max-width: 1000px; margin: 40px auto; padding: 20px; text-align: center; }
+
+    /* GALLERY GRID */
+    .gallery {
+      display: flex; /* changed from grid to flex for flexible sizing */
+      flex-wrap: wrap; /* allows wrapping */
+      gap: 30px; /* keeps the gap */
+      margin-top: 40px;
+      justify-content: center; /* centers the items */
+    }
+    .gallery-item {
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: flex-start;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      animation: fadeIn 1s ease-in-out; /* added fade-in for items */
+      max-width: 250px;
+    }
+    .gallery-item:hover { transform: scale(1.05); box-shadow: 0 0 30px #ff99aa; }
+    .gallery-item img, .gallery-item video { 
+      width: 100%;
+      height: auto; /* changed from auto to auto for natural size */ 
+      border-radius: 20px;
+      display: block;
+    }
+    .gallery-item .caption { padding: 10px; font-size: 1.2em; color: #ffccd5; text-shadow: 0 0 6px #ff99aa; margin-top: auto; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-content {
+      max-width: 90%; max-height: 80%;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #ff99aa;
+      background: #000;
+      padding: 10px;
+      position: relative;
+    }
+    .lightbox-content img, .lightbox-content video {
+      max-width: 100%; max-height: 80vh;
+      border-radius: 20px;
+      display: block;
+      margin: auto;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 30px;
+      font-size: 2em;
+      color: #fff;
+      cursor: pointer;
+      text-shadow: 0 0 10px #ff99aa;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      font-size: 2em;
+      color: #fff;
+      cursor: pointer;
+      text-shadow: 0 0 10px #ff99aa;
+      padding: 10px;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: #fff;
+      font-size: 1.2em;
+      text-shadow: 0 0 10px #ff99aa;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <h1>Memories of Us</h1>
+
+    <!-- Gallery -->
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="mem1.jpg" alt="Memory 1">
+        <div class="caption">Our first date 🤍 - 24.08.2024</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem2.jpg" alt="Memory 2">
+        <div class="caption">Date #2 - 28.09.2024</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem3.jpg" alt="Memory 3">
+        <div class="caption">Date #3 - 28.01.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem4.jpg" alt="Memory 4">
+        <div class="caption">Date #4 - 18.02.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem5.jpg" alt="Memory 5">
+        <div class="caption">Date #5 - 08.03.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem6.jpg" alt="Memory 6">
+        <div class="caption">Date #6 - 23.03.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem7.jpg" alt="Memory 7">
+        <div class="caption">Date #7 - 03.06.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem8.jpg" alt="Memory 8">
+        <div class="caption">Date #8 - 21.07.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem9.jpg" alt="Memory 9">
+        <div class="caption">Date #9 - 27.07.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem10.jpg" alt="Memory 10">
+        <div class="caption">Date #10 - 30.07.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem11.jpg" alt="Memory 11">
+        <div class="caption">Date #11 - 01.08.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem12.jpg" alt="Memory 12">
+        <div class="caption">Date #12 - 12.08.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem13.jpg" alt="Memory 13">
+        <div class="caption">Date #13 - 25.08.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem14.jpg" alt="Memory 14">
+        <div class="caption">Date #14 - 20.09.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem15.jpg" alt="Memory 15">
+        <div class="caption">Date #15 - 30.09.2025</div>
+      </div>
+      <div class="gallery-item">
+        <img src="mem16.jpg" alt="Memory 16">
+        <div class="caption">Date #16 - 26.12.2025</div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="button-container">
+      <a href="index.html#main" class="back-btn">Back</a>
+    </div>
+  </div>
+
+  <!-- Floating elements -->
+  <div class="floating-hearts" id="main-hearts"></div>
+  <div class="floating-dust" id="main-dust"></div>
+
+  <audio id="bg-music" loop>
+    <source src="psiloveyou.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <span class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</span>
+    <span class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</span>
+    <div class="lightbox-content" id="lightbox-content"></div>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+  </div>
+
+  <script>
+    // Floating hearts
+    function createHearts(container, count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (8 + Math.random() * 5) + 's';
+        container.appendChild(heart);
+      }
+    }
+    // Sparkling dust
+    function createDust(container, count) {
+      for (let i = 0; i < count; i++) {
+        const dust = document.createElement('div');
+        dust.classList.add('dust');
+        dust.style.left = Math.random() * 100 + 'vw';
+        dust.style.animationDelay = `${Math.random() * 15}s`;
+        container.appendChild(dust);
+      }
+    }
+    createHearts(document.getElementById('main-hearts'), 25);
+    createDust(document.getElementById('main-dust'), 50);
+
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.volume = 0.7;
+    bgMusic.play().catch(err => console.warn("Audio playback failed:", err));
+
+    // Sparkle trail
+    document.addEventListener("mousemove", function (e) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = (e.pageX - 4) + "px";
+      sparkle.style.top = (e.pageY - 4) + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    });
+
+    // Lightbox logic with navigation
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightbox-content');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    let currentIndex = 0;
+
+    function showLightbox(index) {
+      currentIndex = index;
+      lightbox.style.display = 'flex';
+      lightboxContent.innerHTML = ''; // clear previous
+
+      const item = galleryItems[index];
+      const clone = item.querySelector('img, video').cloneNode(true);
+      if (clone.tagName.toLowerCase() === 'video') {
+        clone.setAttribute('controls', 'true');
+      }
+      lightboxContent.appendChild(clone);
+      lightboxCounter.textContent = `${index + 1} of ${galleryItems.length}`;
+    }
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => showLightbox(index));
+    });
+
+    lightboxClose.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxContent.innerHTML = '';
+    });
+
+    lightboxPrev.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      showLightbox(currentIndex);
+    });
+
+    lightboxNext.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      showLightbox(currentIndex);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'flex') {
+        if (e.key === 'ArrowLeft') lightboxPrev.click();
+        if (e.key === 'ArrowRight') lightboxNext.click();
+        if (e.key === 'Escape') lightboxClose.click();
+      }
+    });
+
+    // Close lightbox if clicking outside content
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+        lightboxContent.innerHTML = '';
+      }
+    });
+  </script>
+</body>
+</html>
